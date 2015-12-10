@@ -15,6 +15,9 @@
 		5D41A0E61C19CD4100E0CC0A /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 5D41A0E41C19CD4100E0CC0A /* Main.storyboard */; };
 		5D41A0E81C19CD4100E0CC0A /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 5D41A0E71C19CD4100E0CC0A /* Assets.xcassets */; };
 		5D41A0EB1C19CD4100E0CC0A /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 5D41A0E91C19CD4100E0CC0A /* LaunchScreen.storyboard */; };
+		5D41A0F61C19D75000E0CC0A /* BallBlue@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 5D41A0F31C19D75000E0CC0A /* BallBlue@2x.png */; };
+		5D41A0F71C19D75000E0CC0A /* Paddle@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 5D41A0F41C19D75000E0CC0A /* Paddle@2x.png */; };
+		5D41A0F81C19D75000E0CC0A /* BrickGreen@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 5D41A0F51C19D75000E0CC0A /* BrickGreen@2x.png */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -31,6 +34,9 @@
 		5D41A0E71C19CD4100E0CC0A /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		5D41A0EA1C19CD4100E0CC0A /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		5D41A0EC1C19CD4100E0CC0A /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		5D41A0F31C19D75000E0CC0A /* BallBlue@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "BallBlue@2x.png"; sourceTree = "<group>"; };
+		5D41A0F41C19D75000E0CC0A /* Paddle@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Paddle@2x.png"; sourceTree = "<group>"; };
+		5D41A0F51C19D75000E0CC0A /* BrickGreen@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "BrickGreen@2x.png"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -82,9 +88,20 @@
 		5D41A0D61C19CD4000E0CC0A /* Supporting Files */ = {
 			isa = PBXGroup;
 			children = (
+				5D41A0F21C19D74100E0CC0A /* images */,
 				5D41A0D71C19CD4000E0CC0A /* main.m */,
 			);
 			name = "Supporting Files";
+			sourceTree = "<group>";
+		};
+		5D41A0F21C19D74100E0CC0A /* images */ = {
+			isa = PBXGroup;
+			children = (
+				5D41A0F31C19D75000E0CC0A /* BallBlue@2x.png */,
+				5D41A0F41C19D75000E0CC0A /* Paddle@2x.png */,
+				5D41A0F51C19D75000E0CC0A /* BrickGreen@2x.png */,
+			);
+			name = images;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -146,8 +163,11 @@
 			files = (
 				5D41A0E01C19CD4100E0CC0A /* GameScene.sks in Resources */,
 				5D41A0EB1C19CD4100E0CC0A /* LaunchScreen.storyboard in Resources */,
+				5D41A0F71C19D75000E0CC0A /* Paddle@2x.png in Resources */,
+				5D41A0F61C19D75000E0CC0A /* BallBlue@2x.png in Resources */,
 				5D41A0E81C19CD4100E0CC0A /* Assets.xcassets in Resources */,
 				5D41A0E61C19CD4100E0CC0A /* Main.storyboard in Resources */,
+				5D41A0F81C19D75000E0CC0A /* BrickGreen@2x.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -277,6 +297,7 @@
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = "bianor.Brick-Breaker";
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				TARGETED_DEVICE_FAMILY = "1,2";
 			};
 			name = Debug;
 		};
@@ -288,6 +309,7 @@
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = "bianor.Brick-Breaker";
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				TARGETED_DEVICE_FAMILY = "1,2";
 			};
 			name = Release;
 		};
