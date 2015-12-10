@@ -310,6 +310,7 @@
 				5D41A0F11C19CD4100E0CC0A /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
 	};
