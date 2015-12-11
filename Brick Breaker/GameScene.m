@@ -18,6 +18,7 @@ static const uint32_t kPaddleCategory = 0x1 << 1;
     CGFloat _ballSpeed;
     SKNode *_brickLayer;
     BOOL _ballReleased;
+    int _currentLevel;
 }
 
 -(void)didMoveToView:(SKView *)view {
@@ -41,22 +42,23 @@ static const uint32_t kPaddleCategory = 0x1 << 1;
     _paddle.physicsBody.categoryBitMask = kPaddleCategory;
     [self addChild:_paddle];
     
-    // Set initial values.
-    _ballSpeed = 250.0;
-    _ballReleased = NO;
-    
     // Setup brick layer.
     _brickLayer = [SKNode node];
     _brickLayer.position = CGPointMake(0, self.size.height);
     [self addChild:_brickLayer];
     
-    // Load level.
-    [self loadLevel:0];
-    
     // Create positioning ball.
     SKSpriteNode *ball = [SKSpriteNode spriteNodeWithImageNamed:@"BallBlue"];
     ball.position = CGPointMake(0, _paddle.size.height);
     [_paddle addChild:ball];
+    
+    // Set initial values.
+    _ballSpeed = 250.0;
+    _ballReleased = NO;
+    _currentLevel = 0;
+    
+    [self loadLevel:_currentLevel];
+    [self newBall];
 }
 
 -(void)touchesBegan:(NSSet *)touches withEvent:(UIEvent *)event {
@@ -79,6 +81,11 @@ static const uint32_t kPaddleCategory = 0x1 << 1;
 
 -(void)update:(CFTimeInterval)currentTime {
     /* Called before each frame is rendered */
+    if ([self isLevelComplete]) {
+        _currentLevel++;
+        [self loadLevel:_currentLevel];
+        [self newBall];
+    }
 }
 
 -(void)didBeginContact:(SKPhysicsContact *)contact
@@ -154,16 +161,60 @@ static const uint32_t kPaddleCategory = 0x1 << 1;
     return ball;
 }
 
+-(void)newBall
+{
+    [self enumerateChildNodesWithName:@"ball" usingBlock:^(SKNode *node, BOOL *stop) {
+        [node removeFromParent];
+    }];
+    // Create positioning ball.
+    SKSpriteNode *ball = [SKSpriteNode spriteNodeWithImageNamed:@"BallBlue"];
+    ball.position = CGPointMake(0, _paddle.size.height);
+    [_paddle addChild:ball];
+    _ballReleased = NO;
+    _paddle.position = CGPointMake(self.size.width * 0.5, _paddle.position.y);
+}
+
+-(BOOL)isLevelComplete
+{
+    // Look for remaining bricks that are not indestructible.
+    for (SKNode *node in _brickLayer.children) {
+        if ([node isKindOfClass:[Brick class]]) {
+            if (!((Brick*)node).indestructible) {
+                return NO;
+            }
+        }
+    }
+    // Couldn't find any non-indestructible bricks
+    return YES;
+}
+
 -(void)loadLevel:(int)levelNumber
 {
+    [_brickLayer removeAllChildren];
     NSArray *level = nil;
     switch (levelNumber) {
         case 0:
             level = @[@[@1,@1,@1,@1,@1,@1],
-                      @[@1,@1,@1,@1,@1,@1],
+                      @[@0,@1,@1,@1,@1,@0],
                       @[@0,@0,@0,@0,@0,@0],
                       @[@0,@0,@0,@0,@0,@0],
-                      @[@2,@2,@3,@3,@2,@2]];
+                      @[@0,@2,@2,@2,@2,@0]];
+            break;
+        case 1:
+            level = @[@[@1,@1,@2,@2,@1,@1],
+                      @[@2,@2,@0,@0,@2,@2],
+                      @[@2,@0,@0,@0,@0,@2],
+                      @[@0,@0,@1,@1,@0,@0],
+                      @[@1,@0,@1,@1,@0,@1],
+                      @[@1,@1,@3,@3,@1,@1]];
+            break;
+        case 2:
+            level = @[@[@1,@0,@1,@1,@0,@1],
+                      @[@1,@0,@1,@1,@0,@1],
+                      @[@0,@0,@3,@3,@0,@0],
+                      @[@2,@0,@0,@0,@0,@2],
+                      @[@0,@0,@1,@1,@0,@0],
+                      @[@3,@2,@1,@1,@2,@3]];
             break;
         default:
             break;
@@ -186,5 +237,6 @@ static const uint32_t kPaddleCategory = 0x1 << 1;
         }
         row++;
     }
+    
 }
 @end
