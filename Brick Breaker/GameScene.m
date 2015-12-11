@@ -8,19 +8,41 @@
 
 #import "GameScene.h"
 
+static const uint32_t kBallCategory = 0x1 << 0;
+static const uint32_t kPaddleCategory = 0x1 << 1;
+
 @implementation GameScene {
     SKSpriteNode *_paddle;
     CGPoint _touchLocation;
+    CGFloat _ballSpeed;
 }
 
 -(void)didMoveToView:(SKView *)view {
     /* Setup your scene here */
     self.backgroundColor = [SKColor colorWithRed:0.15 green:0.15 blue:0.3 alpha:1.0];
     
+    // Set contact delgate.
+    self.physicsWorld.contactDelegate = self;
+    
+    // Turn off gravity.
+    self.physicsWorld.gravity = CGVectorMake(0.0, 0.0);
+    
+    [self createBallWithLocation:CGPointMake(self.view.frame.size.width * 0.5, self.view.frame.size.height * 0.5)
+                     andVelocity:CGVectorMake(40, 180)];
+    
+    // Setup edge.
+    self.physicsBody = [SKPhysicsBody bodyWithEdgeLoopFromRect:self.frame];
+    
     //Setup Paddle
     _paddle = [SKSpriteNode spriteNodeWithImageNamed:@"Paddle"];
     _paddle.position = CGPointMake(self.size.width * 0.5, 90);
+    _paddle.physicsBody = [SKPhysicsBody bodyWithRectangleOfSize:_paddle.size];
+    _paddle.physicsBody.dynamic = NO;
+    _paddle.physicsBody.categoryBitMask = kPaddleCategory;
     [self addChild:_paddle];
+    
+    // Set initial values.
+    _ballSpeed = 250.0;
 }
 
 -(void)touchesBegan:(NSSet *)touches withEvent:(UIEvent *)event {
@@ -34,6 +56,35 @@
 
 -(void)update:(CFTimeInterval)currentTime {
     /* Called before each frame is rendered */
+}
+
+-(void)didBeginContact:(SKPhysicsContact *)contact
+{
+    SKPhysicsBody *firstBody;
+    SKPhysicsBody *secondBody;
+    if (contact.bodyA.categoryBitMask > contact.bodyB.categoryBitMask) {
+        firstBody = contact.bodyB;
+        secondBody = contact.bodyA;
+    } else {
+        firstBody = contact.bodyA;
+        secondBody = contact.bodyB;
+    }
+    if (firstBody.categoryBitMask == kBallCategory && secondBody.categoryBitMask == kPaddleCategory) {
+        if (firstBody.node.position.y > secondBody.node.position.y) {
+            // Get contact point in paddle coordinates.
+            CGPoint pointInPaddle = [secondBody.node convertPoint:contact.contactPoint fromNode:self];
+            // Get contact position as a percentage of the paddle's width.
+            CGFloat x = (pointInPaddle.x + secondBody.node.frame.size.width * 0.5) / secondBody.node.frame.size.width;
+            // Cap percentage and flip it.
+            CGFloat multiplier = 1.0 - fmaxf(fminf(x, 1.0),0.0);
+            // Calculate angle based on ball position in paddle.
+            CGFloat angle = (M_PI_2 * multiplier) + M_PI_4;
+            // Convert angle to vector.
+            CGVector direction = CGVectorMake(cosf(angle), sinf(angle));
+            // Set ball's velocity based on direction and speed.
+            firstBody.velocity = CGVectorMake(direction.dx * _ballSpeed, direction.dy * _ballSpeed);
+        }
+    }
 }
 
 -(void)touchesMoved:(NSSet *)touches withEvent:(UIEvent *)event {
@@ -56,4 +107,21 @@
         _touchLocation = [touch locationInNode:self];
     }
 }
+
+-(SKSpriteNode*)createBallWithLocation:(CGPoint)position andVelocity:(CGVector)velocity
+{
+    SKSpriteNode *ball = [SKSpriteNode spriteNodeWithImageNamed:@"BallBlue"];
+    ball.name = @"ball";
+    ball.position = position;
+    ball.physicsBody = [SKPhysicsBody bodyWithCircleOfRadius:ball.size.width * 0.5];
+    ball.physicsBody.friction = 0.0;
+    ball.physicsBody.linearDamping = 0.0;
+    ball.physicsBody.restitution = 1.0;
+    ball.physicsBody.velocity = velocity;
+    ball.physicsBody.categoryBitMask = kBallCategory;
+    ball.physicsBody.contactTestBitMask = kPaddleCategory;
+    [self addChild:ball];
+    return ball;
+}
+
 @end
