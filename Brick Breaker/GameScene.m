@@ -7,14 +7,17 @@
 //
 
 #import "GameScene.h"
+#import "Brick.h"
 
-static const uint32_t kBallCategory = 0x1 << 0;
+static const uint32_t kBallCategory   = 0x1 << 0;
 static const uint32_t kPaddleCategory = 0x1 << 1;
 
 @implementation GameScene {
     SKSpriteNode *_paddle;
     CGPoint _touchLocation;
     CGFloat _ballSpeed;
+    SKNode *_brickLayer;
+    BOOL _ballReleased;
 }
 
 -(void)didMoveToView:(SKView *)view {
@@ -26,9 +29,6 @@ static const uint32_t kPaddleCategory = 0x1 << 1;
     
     // Turn off gravity.
     self.physicsWorld.gravity = CGVectorMake(0.0, 0.0);
-    
-    [self createBallWithLocation:CGPointMake(self.view.frame.size.width * 0.5, self.view.frame.size.height * 0.5)
-                     andVelocity:CGVectorMake(40, 180)];
     
     // Setup edge.
     self.physicsBody = [SKPhysicsBody bodyWithEdgeLoopFromRect:self.frame];
@@ -43,6 +43,20 @@ static const uint32_t kPaddleCategory = 0x1 << 1;
     
     // Set initial values.
     _ballSpeed = 250.0;
+    _ballReleased = NO;
+    
+    // Setup brick layer.
+    _brickLayer = [SKNode node];
+    _brickLayer.position = CGPointMake(0, self.size.height);
+    [self addChild:_brickLayer];
+    
+    // Load level.
+    [self loadLevel:0];
+    
+    // Create positioning ball.
+    SKSpriteNode *ball = [SKSpriteNode spriteNodeWithImageNamed:@"BallBlue"];
+    ball.position = CGPointMake(0, _paddle.size.height);
+    [_paddle addChild:ball];
 }
 
 -(void)touchesBegan:(NSSet *)touches withEvent:(UIEvent *)event {
@@ -53,6 +67,15 @@ static const uint32_t kPaddleCategory = 0x1 << 1;
     
     }
 }
+
+-(void)touchesEnded:(NSSet *)touches withEvent:(UIEvent *)event {
+    if (!_ballReleased) {
+        _ballReleased = YES;
+        [_paddle removeAllChildren];
+        [self createBallWithLocation:CGPointMake(_paddle.position.x, _paddle.position.y + _paddle.size.height) andVelocity:CGVectorMake(0, _ballSpeed)];
+    }
+}
+
 
 -(void)update:(CFTimeInterval)currentTime {
     /* Called before each frame is rendered */
@@ -69,6 +92,13 @@ static const uint32_t kPaddleCategory = 0x1 << 1;
         firstBody = contact.bodyA;
         secondBody = contact.bodyB;
     }
+    
+    if (firstBody.categoryBitMask == kBallCategory && secondBody.categoryBitMask == kBrickCategory) {
+        if ([secondBody.node respondsToSelector:@selector(hit)]) {
+            [secondBody.node performSelector:@selector(hit)];
+        }
+    }
+    
     if (firstBody.categoryBitMask == kBallCategory && secondBody.categoryBitMask == kPaddleCategory) {
         if (firstBody.node.position.y > secondBody.node.position.y) {
             // Get contact point in paddle coordinates.
@@ -119,9 +149,42 @@ static const uint32_t kPaddleCategory = 0x1 << 1;
     ball.physicsBody.restitution = 1.0;
     ball.physicsBody.velocity = velocity;
     ball.physicsBody.categoryBitMask = kBallCategory;
-    ball.physicsBody.contactTestBitMask = kPaddleCategory;
+    ball.physicsBody.contactTestBitMask = kPaddleCategory | kBrickCategory;
     [self addChild:ball];
     return ball;
 }
 
+-(void)loadLevel:(int)levelNumber
+{
+    NSArray *level = nil;
+    switch (levelNumber) {
+        case 0:
+            level = @[@[@1,@1,@1,@1,@1,@1],
+                      @[@1,@1,@1,@1,@1,@1],
+                      @[@0,@0,@0,@0,@0,@0],
+                      @[@0,@0,@0,@0,@0,@0],
+                      @[@2,@2,@3,@3,@2,@2]];
+            break;
+        default:
+            break;
+    }
+    
+    int row = 0;
+    int col = 0;
+    for (NSArray *rowBricks in level) {
+        col = 0;
+        for (NSNumber *brickType in rowBricks) {
+            if ([brickType intValue] > 0) {
+                Brick *brick = [[Brick alloc] initWithType:(BrickType)[brickType intValue]];
+                if (brick) {
+                    brick.position = CGPointMake(2 + (brick.size.width * 0.5) + ((brick.size.width + 3) * col)
+                                                 , -(2 + (brick.size.height * 0.5) + ((brick.size.height + 3) * row)));
+                    [_brickLayer addChild:brick];
+                }
+            }
+            col++;
+        }
+        row++;
+    }
+}
 @end

@@ -18,6 +18,9 @@
 		5D41A0F61C19D75000E0CC0A /* BallBlue@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 5D41A0F31C19D75000E0CC0A /* BallBlue@2x.png */; };
 		5D41A0F71C19D75000E0CC0A /* Paddle@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 5D41A0F41C19D75000E0CC0A /* Paddle@2x.png */; };
 		5D41A0F81C19D75000E0CC0A /* BrickGreen@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 5D41A0F51C19D75000E0CC0A /* BrickGreen@2x.png */; };
+		5D41A0FA1C1AEABA00E0CC0A /* BrickBlue@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 5D41A0F91C1AEABA00E0CC0A /* BrickBlue@2x.png */; };
+		5D41A0FD1C1AEBAE00E0CC0A /* Brick.m in Sources */ = {isa = PBXBuildFile; fileRef = 5D41A0FC1C1AEBAE00E0CC0A /* Brick.m */; };
+		5D41A0FF1C1B0B1900E0CC0A /* BrickGrey@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 5D41A0FE1C1B0B1900E0CC0A /* BrickGrey@2x.png */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -37,6 +40,10 @@
 		5D41A0F31C19D75000E0CC0A /* BallBlue@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "BallBlue@2x.png"; sourceTree = "<group>"; };
 		5D41A0F41C19D75000E0CC0A /* Paddle@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Paddle@2x.png"; sourceTree = "<group>"; };
 		5D41A0F51C19D75000E0CC0A /* BrickGreen@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "BrickGreen@2x.png"; sourceTree = "<group>"; };
+		5D41A0F91C1AEABA00E0CC0A /* BrickBlue@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "BrickBlue@2x.png"; sourceTree = "<group>"; };
+		5D41A0FB1C1AEBAE00E0CC0A /* Brick.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Brick.h; sourceTree = "<group>"; };
+		5D41A0FC1C1AEBAE00E0CC0A /* Brick.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Brick.m; sourceTree = "<group>"; };
+		5D41A0FE1C1B0B1900E0CC0A /* BrickGrey@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "BrickGrey@2x.png"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -73,6 +80,8 @@
 				5D41A0DA1C19CD4100E0CC0A /* AppDelegate.m */,
 				5D41A0DC1C19CD4100E0CC0A /* GameScene.h */,
 				5D41A0DD1C19CD4100E0CC0A /* GameScene.m */,
+				5D41A0FB1C1AEBAE00E0CC0A /* Brick.h */,
+				5D41A0FC1C1AEBAE00E0CC0A /* Brick.m */,
 				5D41A0DF1C19CD4100E0CC0A /* GameScene.sks */,
 				5D41A0E11C19CD4100E0CC0A /* GameViewController.h */,
 				5D41A0E21C19CD4100E0CC0A /* GameViewController.m */,
@@ -97,9 +106,11 @@
 		5D41A0F21C19D74100E0CC0A /* images */ = {
 			isa = PBXGroup;
 			children = (
+				5D41A0FE1C1B0B1900E0CC0A /* BrickGrey@2x.png */,
 				5D41A0F31C19D75000E0CC0A /* BallBlue@2x.png */,
 				5D41A0F41C19D75000E0CC0A /* Paddle@2x.png */,
 				5D41A0F51C19D75000E0CC0A /* BrickGreen@2x.png */,
+				5D41A0F91C1AEABA00E0CC0A /* BrickBlue@2x.png */,
 			);
 			name = images;
 			sourceTree = "<group>";
@@ -161,6 +172,8 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				5D41A0FA1C1AEABA00E0CC0A /* BrickBlue@2x.png in Resources */,
+				5D41A0FF1C1B0B1900E0CC0A /* BrickGrey@2x.png in Resources */,
 				5D41A0E01C19CD4100E0CC0A /* GameScene.sks in Resources */,
 				5D41A0EB1C19CD4100E0CC0A /* LaunchScreen.storyboard in Resources */,
 				5D41A0F71C19D75000E0CC0A /* Paddle@2x.png in Resources */,
@@ -180,6 +193,7 @@
 			files = (
 				5D41A0E31C19CD4100E0CC0A /* GameViewController.m in Sources */,
 				5D41A0DB1C19CD4100E0CC0A /* AppDelegate.m in Sources */,
+				5D41A0FD1C1AEBAE00E0CC0A /* Brick.m in Sources */,
 				5D41A0DE1C19CD4100E0CC0A /* GameScene.m in Sources */,
 				5D41A0D81C19CD4000E0CC0A /* main.m in Sources */,
 			);
