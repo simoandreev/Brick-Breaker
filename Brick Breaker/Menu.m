@@ -27,6 +27,7 @@ SKLabelNode *_buttonText;
         _panelText.fontColor = [SKColor grayColor];
         _panelText.fontSize = 15;
         _panelText.verticalAlignmentMode = SKLabelVerticalAlignmentModeCenter;
+        _panelText.zPosition = 1;
         [_menuPanel addChild:_panelText];
         
         _buttonText = [SKLabelNode labelNodeWithFontNamed:@"Futura"];
@@ -36,6 +37,7 @@ SKLabelNode *_buttonText;
         _buttonText.fontColor = [SKColor grayColor];
         _buttonText.fontSize = 15;
         _buttonText.verticalAlignmentMode = SKLabelVerticalAlignmentModeCenter;
+        _buttonText.zPosition = 1;
         _playButton.name = @"Play Button";
         [_playButton addChild:_buttonText];
         
